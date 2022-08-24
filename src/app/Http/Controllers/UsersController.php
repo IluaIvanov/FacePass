@@ -14,7 +14,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        return print_r(file_get_contents('https://api.vk.com/method/users.get?user_ids=ilua.ivanov&access_token=ecbac394ecbac394ecbac3945defaab242eecbaecbac3948fbcd0bfebf145fc972a80cf&v=5.131'));
     }
 
     /**
