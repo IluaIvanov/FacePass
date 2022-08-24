@@ -7,14 +7,14 @@ services:
         uid: 1000
       context: ./docker/app/
       dockerfile: Dockerfile
-    image: local
-    container_name: local-app
+    image: facepass
+    container_name: facepass-app
     user: root
     hostname: *app-service
     restart: always
-    working_dir: /var/www/local
+    working_dir: /var/www/facepass
     volumes:
-      - ./src:/var/www/local:rw
+      - ./src:/var/www/facepass:rw
       - ./docker/app/etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./docker/app/etc/php/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf
     depends_on:
@@ -24,25 +24,25 @@ services:
       
   &scheduler-service scheduler:
     <<: *app-service-template
-    container_name: local-scheduler
+    container_name: facepass-scheduler
     restart: always
     hostname: *scheduler-service
-    command: php /var/www/local/artisan schedule:work
+    command: php /var/www/facepass/artisan schedule:work
     networks:
       - app-network
 
   &queue-service queue:
     <<: *app-service-template
-    container_name: local-queue
+    container_name: facepass-queue
     restart: always
     hostname: *queue-service
-    command: php /var/www/local/artisan queue:work --tries=3
+    command: php /var/www/facepass/artisan queue:work --tries=3
     networks:
       - app-network
 
   &pgsqlname pgsql:
     image: postgres:13.7-alpine
-    container_name: &pgsqlhost local-pgsql
+    container_name: &pgsqlhost facepass-pgsql
     restart: always
     hostname: *pgsqlname
     environment: 
@@ -50,13 +50,13 @@ services:
       POSTGRES_DB: dev
       POSTGRES_USER: dev
     volumes:
-      - pg-data-local:/var/lib/postgresql/data:rw
+      - pg-data-facepass:/var/lib/postgresql/data:rw
     networks:
       - app-network
 
   &phppgadmin phppgadmin:
     image: bitnami/phppgadmin:latest
-    container_name: local-phppgadmin
+    container_name: facepass-phppgadmin
     restart: always
     hostname: *pgsqlname
     ports:
@@ -71,13 +71,13 @@ services:
 
   &nginxname nginx:
     image: nginx:1.17-alpine
-    container_name: local-nginx
+    container_name: facepass-nginx
     restart: always
     hostname: *nginxname
     ports:
       - 0.0.0.0:8080:80
     volumes:
-      - ./src:/var/www/local
+      - ./src:/var/www/facepass
       - ./docker/nginx:/etc/nginx/conf.d
       - ./logNginx:/var/log/nginx/
     networks:
@@ -88,6 +88,6 @@ networks:
     driver: bridge
   
 volumes:
-  pg-data-local:
+  pg-data-facepass:
     driver: local
   
