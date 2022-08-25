@@ -21,24 +21,6 @@ services:
       - pgsql
     networks:
       - app-network
-      
-  &scheduler-service scheduler:
-    <<: *app-service-template
-    container_name: facepass-scheduler
-    restart: always
-    hostname: *scheduler-service
-    command: php /var/www/facepass/artisan schedule:work
-    networks:
-      - app-network
-
-  &queue-service queue:
-    <<: *app-service-template
-    container_name: facepass-queue
-    restart: always
-    hostname: *queue-service
-    command: php /var/www/facepass/artisan queue:work --tries=3
-    networks:
-      - app-network
 
   &pgsqlname pgsql:
     image: postgres:13.7-alpine

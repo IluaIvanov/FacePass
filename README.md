@@ -27,14 +27,14 @@
 Для настройки следует скопировать `.env.example` в `.env` файл. 
 
 Далее следует запустить команду генерации ключа:
-	```bash 
-		make app-c command="php artisan key:generate"
-	```
+```bash 
+make app-c command="php artisan key:generate"
+```
 
 Следующий шаг:
-	```bash 
-		make app-c command="php artisan migrate"
-	```
+```bash 
+make app-c command="php artisan migrate"
+```
 
 Для работы скрипта требуется заполнить обязательный параметр `VK_ACCESS_TOKEN` в `.env` файле. Этапы получения токена описаны [по ссылке](https://yakovtsov.ru/poleznoe/kak-poluchit-token-vkontakte#Как_получить_ключ_доступа_приложения) 
 
