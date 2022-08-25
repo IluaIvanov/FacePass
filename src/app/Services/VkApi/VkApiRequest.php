@@ -1,21 +1,67 @@
 <?php
 
-namespace App\Services\VKAPI;
+namespace App\Services\VkApi;
 
-class VKAPIRequest
+class VkApiRequest
 {
-     // /**
-    //  * return headers
-    //  * @return array
-    //  */
-    // protected function getHeaders()
-    // {
-    //     return array(
-    //         'Content-Type: application/json; charset=utf-8',
-    //         'X-Requested-With:XMLHttpRequest',
-    //         'Authorization: Basic '.$this->getAuthorization(),
-    //     );
-    // }
+    // VK access token (service token)
+    protected $accessToken;
+
+    /**
+     * @param  string  $accessToken
+     */
+    public function setAccessToken($accessToken)
+    {
+        $this->accessToken = trim($accessToken);
+    }
+
+    /**
+     * @return string $accessToken
+     */
+    public function getAccessToken()
+    {
+        return $this->accessToken;
+    }
+
+    // VK version API
+    protected $version;
+
+    /**
+     * @param  string  $version
+     */
+    public function setVersion($version)
+    {
+        $this->version = trim($version);
+    }
+
+    /**
+     * @return string $version
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    // VK url API
+    protected $url;
+
+    /**
+     * @param string $url
+     *
+     * @return string $url
+     */
+    public function getUrl($url)
+    {
+        return $this->url . $url;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
 
      /**
      * GEt Method
@@ -35,7 +81,6 @@ class VKAPIRequest
                 CURLOPT_TIMEOUT        => 30,
                 CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
                 CURLOPT_CUSTOMREQUEST  => "GET",
-                // CURLOPT_HTTPHEADER     => $this->getHeaders(),
             ));
 
             $response = curl_exec($curl);

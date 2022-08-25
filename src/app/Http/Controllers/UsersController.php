@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Users;
+use App\Services\VkApi\VkApi;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
@@ -14,7 +15,21 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return print_r(file_get_contents('https://api.vk.com/method/users.get?user_ids=ilua.ivanov&access_token=ecbac394ecbac394ecbac3945defaab242eecbaecbac3948fbcd0bfebf145fc972a80cf&v=5.131'));
+        $userInfo = (new VkApi)->sendQuery([
+            'user_ids' => 'ilua.ivanov',
+        ], 'users.get');
+
+        if (array_key_exists('response', $userInfo) && count($userInfo) != 0) {
+            $userId = $userInfo['response'][0]['id'];
+            return print_r((new VkApi)->sendQuery([
+                'user_id' => $userId,
+                'count' => 10,
+                'offset' => 0,
+                'fields' => [
+                    'photo_200_orig'
+                ]
+            ], 'friends.get'));
+        } else return;
     }
 
     /**
