@@ -2,8 +2,6 @@
 
 namespace App\Services\VkApi;
 
-use Exception;
-
 class VkApi extends VkApiRequest
 {
     /**

@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('photo');
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('photo')->default('');
             $table->timestamps();
         });
     }
